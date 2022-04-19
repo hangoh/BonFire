@@ -1,0 +1,50 @@
+<%layout ("layouts/boilerplate")%>
+    <div id="map" style="width:100%; aspect-ratio:9/4.5;"></div>
+    <h1>All Campgrounds</h1>
+    <% for(let p of places){%>
+        <div class="card mb-3" >
+            <div class="row">
+                <div class="col-md-4">
+                    <%if(p.images.length > 0){%>
+                        <img src="<%= p.images[0].url%>" alt="..." class="img-fluid">
+                    <%}else{%>
+                        <img src="" alt="..." class="img-fluid">
+                    <%}%>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <dh5 class="card-title">
+                            <%= p.title%>
+                        </dh5>
+                        <p class="card-text">
+                            <%=p.description%>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%=p.location%>
+                            </small>
+                        </p>
+                    </div>
+                    <a href="/places/<%= p._id%>" class="btn btn-primary">View Campground</a>
+                </div>
+            </div>
+        </div>
+    <% } %>
+<script>
+    
+    const places = <%- JSON.stringify(places) %>
+    const placesData={
+        features:[]
+    }
+    for(let place of places){
+        placesData.features.push({
+            properties:{
+                _id: place._id,
+                title: place.title
+            },
+            geometry: place.geometry
+        })
+    }
+    
+</script>
+<script src="/javascripts/clusterMap.js"></script>
